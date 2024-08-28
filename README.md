@@ -56,7 +56,7 @@ The entrypoint script sets up the timezone, adds the cron job for fetching praye
    Run the following command to build the Docker image and start the container:
 
    ```sh
-   docker-compose up --build
+   docker-compose up -d --build
    ```
 
 2. **Fetch Prayer Times**
