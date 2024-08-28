@@ -1,0 +1,14 @@
+services:
+  audio_player:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: azan_cron_container
+    volumes:
+      - ./prayer_data:/app/prayer_data
+      - ./mp3:/app/mp3
+    environment:
+      - TZ=Asia/Kuala_Lumpur
+    devices:
+      - "/dev/snd:/dev/snd"  # Access to sound device
+
