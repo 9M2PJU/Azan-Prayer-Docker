@@ -1,6 +1,6 @@
 # Azan-Prayer-Docker
 
-This Docker project sets up a containerized environment to fetch prayer times and play audio notifications using `play` from `sox` with `alsa` for sound output. The container is based on Alpine Linux and uses `cron` for scheduling tasks.
+This Docker project sets up a containerized environment to fetch prayer times and play audio notifications using `mpg123` with `alsa` for sound output. The container is based on Alpine Linux and uses `cron` for scheduling tasks.
 
 ## Overview
 
