@@ -1,9 +1,5 @@
 # Azan-Prayer-Docker
 
-Here’s a `README.md` for your project, summarizing its purpose, setup, and usage:
-
----
-
 # Azan Prayer Time Announcer
 
 This project sets up a Docker container to fetch daily prayer times, configure cron jobs for automatic announcements, and play Azan audio files at the appropriate times.
