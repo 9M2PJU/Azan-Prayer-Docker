@@ -1,93 +1,79 @@
 # Azan-Prayer-Docker
 
-# Azan Prayer Time Announcer
-
-This project sets up a Docker container to fetch daily prayer times, configure cron jobs for automatic announcements, and play Azan audio files at the appropriate times.
+This Docker project sets up a containerized environment to fetch prayer times and play audio notifications using `play` from `sox` with `alsa` for sound output. The container is based on Alpine Linux and uses `cron` for scheduling tasks.
 
 ## Overview
 
-The container does the following:
-1. **Fetches Prayer Times**: Uses `fetch_prayer.py` to fetch prayer times from a public API and writes them to a file.
-2. **Sets Up Cron Jobs**: Uses `read_prayer.py` to read the fetched prayer times and set up cron jobs to play Azan audio files at the right times.
-3. **Timezone**: The container is configured to use the host's timezone (`Asia/Kuala_Lumpur`).
+- **Fetches prayer times** from a specified API daily.
+- **Updates cron jobs** to play Azan audio at the specified prayer times.
+- **Uses ALSA** for audio playback in the container.
 
-## Setup
+## Requirements
 
-### Prerequisites
+- **Docker**: Ensure Docker is installed on your system.
+- **ALSA**: Audio support using ALSA.
 
-- Docker and Docker Compose installed on your machine.
-
-### Directory Structure
-
-Make sure your project directory structure looks like this:
-
-```
-azan/
-│
-├── Dockerfile
-├── docker-compose.yml
-├── entrypoint.sh
-├── fetch_prayer.py
-├── read_prayer.py
-├── crontab
-├── prayer_data/
-│   └── prayer.txt
-└── mp3/
-    ├── azan.mp3
-    └── azan2.mp3
-```
+## Installation
 
 ### Dockerfile
 
-Builds the Docker image with Python, necessary packages, and cron configuration. Includes a virtual environment for Python dependencies.
+The Dockerfile sets up the container environment with Python, necessary packages, and cron jobs. It also handles the virtual environment setup and installs required Python libraries.
 
 ### docker-compose.yml
 
-Defines the Docker service, specifying build context, volumes, and environment settings.
+The Docker Compose configuration sets up the container, ensuring that the timezone is synchronized with the host and mounts the necessary directories.
 
 ### entrypoint.sh
 
-The entrypoint script sets up the timezone, adds the cron job for fetching prayer times if it doesn’t already exist, runs the necessary Python scripts, and starts the cron daemon.
+The entrypoint script activates the virtual environment, starts the cron daemon, runs the `fetch_prayer.py` script, and then updates the cron jobs using `read_prayer.py`.
 
 ## Usage
 
-1. **Build and Start the Container**
+1. **Clone the repository:**
 
-   Run the following command to build the Docker image and start the container:
-
-   ```sh
-   docker-compose up -d --build
+   ```bash
+   git clone https://github.com/9M2PJU/Azan-Prayer-Docker.git
+   cd Azan-Prayer-Docker
    ```
 
-2. **Fetch Prayer Times**
+2. **Build and run the Docker container:**
 
-   The `fetch_prayer.py` script will run every day at 4 AM, fetching new prayer times.
-
-3. **Set Up Cron Jobs**
-
-   The `read_prayer.py` script will set up or update cron jobs to play Azan audio files according to the fetched prayer times.
-
-4. **Check Logs**
-
-   To view logs for debugging or verification, use:
-
-   ```sh
-   docker logs audio_player
+   ```bash
+   docker compose up -d --build
    ```
+
+3. **Container will:**
+   - Fetch prayer times daily at 4 AM.
+   - Update cron jobs based on fetched prayer times.
+   - Play Azan audio at scheduled prayer times.
+
+## Files
+
+- `Dockerfile`: Defines the container image.
+- `docker-compose.yml`: Configuration for Docker Compose.
+- `entrypoint.sh`: Script that runs when the container starts.
+- `fetch_prayer.py`: Python script to fetch prayer times.
+- `read_prayer.py`: Python script to update cron jobs based on fetched times.
+- `mp3/`: Directory containing the Azan audio files.
+- `crontab`: File defining default cron jobs (if necessary).
 
 ## Notes
 
-- Ensure that the `mp3/` directory contains the Azan audio files.
-- Adjust the `crontab` file if additional cron jobs are needed.
+- **ALSA Audio**: Ensure your host system has the ALSA sound system installed and configured if you are using it for sound playback inside the container.
+- **Timezone**: The container uses the host's timezone, which is set to `Asia/Kuala_Lumpur`.
 
 ## Troubleshooting
 
-- **Container Exits Unexpectedly**: Check the logs for errors using `docker logs audio_player` and ensure that all paths and file permissions are correct.
-- **Timezone Issues**: Confirm that the `TZ` environment variable is correctly set in both `Dockerfile` and `entrypoint.sh`.
+- **Audio Playback Issues**: Check if ALSA is properly configured on your host system.
+- **Cron Logs**: If cron jobs are not executing, verify `/var/log/cron.log` inside the container for any errors.
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+I hope this is better!
 
 ---
 
