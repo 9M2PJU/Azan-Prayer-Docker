@@ -71,10 +71,3 @@ The entrypoint script activates the virtual environment, starts the cron daemon,
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
-
-I hope this is better!
-
----
-
-Feel free to customize or add more details specific to your setup or requirements.
