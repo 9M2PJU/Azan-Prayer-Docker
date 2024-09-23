@@ -18,6 +18,7 @@ def read_prayer_times(file_path):
 def add_cron_jobs(prayer_times):
     cron_jobs = []
 
+    # Add cron jobs for prayer times
     for prayer_index, prayer_time_str in prayer_times:
         prayer_hour, prayer_minute = map(int, prayer_time_str.split(':'))
         if prayer_index == 0:
@@ -27,6 +28,16 @@ def add_cron_jobs(prayer_times):
         command = f"mpg123 {audio_file}"
         cron_job = f"{prayer_minute} {prayer_hour} * * * {command} # Prayer Time\n"
         cron_jobs.append(cron_job)
+
+    # Add cron job for fetching prayer times at 4 AM daily
+    fetch_prayer_command = "/app/venv/bin/python3 /app/fetch_prayer.py"
+    fetch_prayer_cron_job = f"0 4 * * * {fetch_prayer_command} # Fetch Prayer Times\n"
+    cron_jobs.append(fetch_prayer_cron_job)
+
+    # Add cron job to read prayer times after fetching them at 4:01 AM
+    read_prayer_command = "/app/venv/bin/python3 /app/read_prayer.py"
+    read_prayer_cron_job = f"1 4 * * * {read_prayer_command} # Read Prayer Times\n"
+    cron_jobs.append(read_prayer_cron_job)
 
     # Read existing crontab entries
     try:
@@ -51,4 +62,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
