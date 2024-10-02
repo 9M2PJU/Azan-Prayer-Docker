@@ -67,7 +67,5 @@ The entrypoint script activates the virtual environment, starts the cron daemon,
 - **Audio Playback Issues**: Check if ALSA is properly configured on your host system.
 - **Cron Logs**: If cron jobs are not executing, verify `/var/log/cron.log` inside the container for any errors.
 
-## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
