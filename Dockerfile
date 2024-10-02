@@ -1,18 +1,7 @@
-FROM alpine:latest
+FROM python:3.12-alpine
 
-# Install required packages
-RUN apk update && \
-    apk add --no-cache python3 py3-pip mpg123 alsa-lib alsa-utils curl openrc tzdata && \
-    apk add --no-cache --virtual .build-deps gcc musl-dev
-
-# Create a virtual environment
-RUN python3 -m venv /app/venv
-
-# Install Python packages inside the virtual environment
-RUN /app/venv/bin/pip install --no-cache-dir requests pydub
-
-# Remove build dependencies
-RUN apk del .build-deps
+# Install additional system packages
+RUN apk add --no-cache mpg123 alsa-lib alsa-utils curl openrc tzdata
 
 # Set the timezone
 ENV TZ=Asia/Kuala_Lumpur
@@ -26,11 +15,15 @@ COPY fetch_prayer.py /app/
 COPY read_prayer.py /app/
 COPY mp3/* /app/mp3/
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
 
-# Copy the crontab file
-COPY crontab /etc/crontabs/root
+# Install Python dependencies
+RUN pip install --no-cache-dir requests pydub
+
+# Ensure the scripts are executable
+RUN chmod a+x /app/*.py /entrypoint.sh
+
+# Pre-run Python scripts
+RUN python /app/fetch_prayer.py && python /app/read_prayer.py
 
 # Set entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
-
