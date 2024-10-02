@@ -1,5 +1,5 @@
 services:
-  audio_player:
+  azan_cron:
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,6 +9,7 @@ services:
       - ./mp3:/app/mp3
     environment:
       - TZ=Asia/Kuala_Lumpur
+    restart: always
     devices:
       - "/dev/snd:/dev/snd"  # Access to sound device
 
