@@ -55,7 +55,7 @@ The entrypoint script activates the virtual environment, starts the cron daemon,
 - `fetch_prayer.py`: Python script to fetch prayer times.
 - `read_prayer.py`: Python script to update cron jobs based on fetched times.
 - `mp3/`: Directory containing the Azan audio files.
-- `crontab`: File defining default cron jobs (if necessary).
+- `crontab`: File defining default cron jobs.
 
 ## Notes
 
